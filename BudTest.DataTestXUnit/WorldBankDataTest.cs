@@ -13,10 +13,10 @@ namespace BudTest.DataTestXUnit
         {
             var target = new WorldBankData();
 
-            var result = target.FindCountry("GB");
-            result.Wait();
+            var task = target.FindCountry("GB");
+            task.Wait();
 
-            Assert.IsType<Country>(result.Result);
+            Assert.IsType<Country>(task.Result);
         }
 
         [Fact]
@@ -24,10 +24,26 @@ namespace BudTest.DataTestXUnit
         {
             var target = new WorldBankData();
 
-            var result = target.FindCountry("XX");
-            result.Wait();
+            var task = target.FindCountry("XX");
+            task.Wait();
 
-            Assert.Null(result.Result);
+            Assert.Null(task.Result);
+        }
+
+        [Theory]
+        [InlineData("GB")]
+        public void FindCountry_GreatBritain_ReturnsRequiredValues(string value)
+        {
+            var target = new WorldBankData();
+
+            var task = target.FindCountry(value);
+            task.Wait();
+
+            Assert.Equal("United Kingdom", task.Result.Name);
+            Assert.Equal("Europe & Central Asia", task.Result.Region);
+            Assert.Equal("London", task.Result.CapitalCity);
+            Assert.Equal(-0.126236M, task.Result.Longitude);
+            Assert.Equal(51.5002M, task.Result.Latitude);
         }
     }
 }
