@@ -12,16 +12,16 @@ namespace BudTest.Data
 {
     public class WorldBankData : IWorldBankData
     {
+        private HttpClient client = new HttpClient();
+        private DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(WorldBankCountry[][]));
+
         public async Task<ICountry> FindCountry(string countryCode)
         {
             this.ValidateInput(countryCode);
 
-            var client = new HttpClient();
-            var serializer = new DataContractJsonSerializer(typeof(WorldBankCountry[][]));
+            var countryResponse = await this.client.GetStreamAsync(string.Format("http://api.worldbank.org/v2/country/{0}?format=json", countryCode));
 
-            var countryResponse = await client.GetStreamAsync(string.Format("http://api.worldbank.org/v2/country/{0}?format=json", countryCode));
-
-            WorldBankCountry[][] response = serializer.ReadObject(countryResponse) as WorldBankCountry[][];
+            WorldBankCountry[][] response = this.serializer.ReadObject(countryResponse) as WorldBankCountry[][];
             
             if (!this.ValidateResponse(response))
             {
