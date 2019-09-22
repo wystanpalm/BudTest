@@ -11,7 +11,7 @@ namespace BudTest.DataTestXUnit
         [Fact]
         public void FindCountry_ValidCountry_ReturnsCountry()
         {
-            var target = new WorldBankXmlData();
+            var target = new WorldBankData();
 
             var task = target.FindCountry("GB");
             task.Wait();
@@ -22,7 +22,7 @@ namespace BudTest.DataTestXUnit
         [Fact]
         public void FindCountry_InValidCountry_ReturnsNull()
         {
-            var target = new WorldBankXmlData();
+            var target = new WorldBankData();
 
             var task = target.FindCountry("XX");
             task.Wait();
@@ -34,7 +34,7 @@ namespace BudTest.DataTestXUnit
         [InlineData("GB")]
         public void FindCountry_GreatBritain_ReturnsRequiredValues(string value)
         {
-            var target = new WorldBankXmlData();
+            var target = new WorldBankData();
 
             var task = target.FindCountry(value);
             task.Wait();
@@ -49,7 +49,7 @@ namespace BudTest.DataTestXUnit
         [Fact]
         public void FindCountry_InvalidCharacters_ThrowsException()
         {
-            var target = new WorldBankXmlData();
+            var target = new WorldBankData();
 
             var task = target.FindCountry("/");
             Exception exception = Assert.Throws<AggregateException>(() => task.Wait());

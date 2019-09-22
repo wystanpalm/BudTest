@@ -13,7 +13,7 @@ namespace BudTest.ConsoleApp
         Program()
         {
             // Could inject this dependency in future
-            this.worldBankData = new WorldBankXmlData();
+            this.worldBankData = new WorldBankData();
         }
 
         static void Main(string[] args)

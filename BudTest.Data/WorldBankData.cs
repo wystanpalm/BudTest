@@ -12,7 +12,7 @@ using BudTest.Model;
 
 namespace BudTest.Data
 {
-    public class WorldBankXmlData : IWorldBankData
+    public class WorldBankData : IWorldBankData
     {
         private HttpClient client = new HttpClient();
 
