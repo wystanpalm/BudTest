@@ -45,5 +45,15 @@ namespace BudTest.DataTestXUnit
             Assert.Equal(-0.126236M, task.Result.Longitude);
             Assert.Equal(51.5002M, task.Result.Latitude);
         }
+
+        [Fact]
+        public void FindCountry_InvalidCharacters_ThrowsException()
+        {
+            var target = new WorldBankData();
+
+            var task = target.FindCountry("/");
+            Exception exception = Assert.Throws<AggregateException>(() => task.Wait());
+            Assert.IsType<ArgumentException>(exception.InnerException);
+        }
     }
 }

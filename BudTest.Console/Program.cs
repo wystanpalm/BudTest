@@ -2,6 +2,7 @@
 using BudTest.IData;
 using BudTest.Data;
 using BudTest.IModel;
+using System.Text.RegularExpressions;
 
 namespace BudTest.ConsoleApp
 {
@@ -20,6 +21,13 @@ namespace BudTest.ConsoleApp
                 if (code == "Exit")
                 {
                     break;
+                }
+
+                Regex regex = new Regex("^[a-zA-z]{2,3}$");
+                if (!regex.IsMatch(code))
+                {
+                    Console.WriteLine("Invalide country code");
+                    continue;
                 }
 
                 var countryTask = worldBankData.FindCountry(code);
