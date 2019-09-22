@@ -8,29 +8,40 @@ namespace BudTest.ConsoleApp
 {
 	class Program
 	{
-		static void Main(string[] args)
+        IWorldBankData worldBankData;
+
+        Program()
+        {
+            // Could inject this dependency in future
+            this.worldBankData = new WorldBankXmlData();
+        }
+
+        static void Main(string[] args)
 		{
+            Program program = new Program();
 
-            IWorldBankData worldBankData = new WorldBankXmlData();
+            program.LaunchUI();
+        }
 
+        private void LaunchUI()
+        {
             do
             {
-                Console.WriteLine("Enter the country code you want to search for, type \"Exit\" to quit:");
-			    string code = Console.ReadLine();
+                Console.WriteLine("Enter the country code you want to search for, type \"exit\" to quit:");
+                string code = Console.ReadLine();
 
-                if (code == "Exit")
+                if (code.ToLower() == "exit")
                 {
                     break;
                 }
 
-                Regex regex = new Regex("^[a-zA-z]{2,3}$");
-                if (!regex.IsMatch(code))
+                if (!this.ValidateUserInput(code))
                 {
                     Console.WriteLine("Invalid country code");
                     continue;
                 }
 
-                var countryTask = worldBankData.FindCountry(code);
+                var countryTask = this.worldBankData.FindCountry(code);
                 countryTask.Wait();
                 ICountry country = countryTask.Result;
 
@@ -40,13 +51,24 @@ namespace BudTest.ConsoleApp
                 }
                 else
                 {
-                    Console.WriteLine("Name: {0}", country.Name);
-                    Console.WriteLine("Region: {0}", country.Region);
-                    Console.WriteLine("Capital City: {0}", country.CapitalCity);
-                    Console.WriteLine("Longitude: {0}", country.Longitude);
-                    Console.WriteLine("Latitude: {0}", country.Latitude);
+                    this.OutputCountryDetails(country);
                 }
             } while (true);
+        }
+
+        private void OutputCountryDetails(ICountry country)
+        {
+            Console.WriteLine("Name: {0}", country.Name);
+            Console.WriteLine("Region: {0}", country.Region);
+            Console.WriteLine("Capital City: {0}", country.CapitalCity);
+            Console.WriteLine("Longitude: {0}", country.Longitude);
+            Console.WriteLine("Latitude: {0}", country.Latitude);
+        }
+
+        private bool ValidateUserInput(string code)
+        {
+            Regex regex = new Regex("^[a-zA-z]{2,3}$");
+            return (regex.IsMatch(code));
         }
     }
 }
