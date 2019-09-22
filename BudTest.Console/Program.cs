@@ -11,7 +11,7 @@ namespace BudTest.ConsoleApp
 		static void Main(string[] args)
 		{
 
-            IWorldBankData worldBankData = new WorldBankData();
+            IWorldBankData worldBankData = new WorldBankXmlData();
 
             do
             {
@@ -26,7 +26,7 @@ namespace BudTest.ConsoleApp
                 Regex regex = new Regex("^[a-zA-z]{2,3}$");
                 if (!regex.IsMatch(code))
                 {
-                    Console.WriteLine("Invalide country code");
+                    Console.WriteLine("Invalid country code");
                     continue;
                 }
 
