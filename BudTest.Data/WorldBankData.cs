@@ -22,15 +22,18 @@ namespace BudTest.Data
             var countryResponse = await client.GetStreamAsync(string.Format("http://api.worldbank.org/v2/country/{0}?format=json", countryCode));
 
             WorldBankCountry[][] response = serializer.ReadObject(countryResponse) as WorldBankCountry[][];
-
-            if (response.Length != 2)
+            
+            if (!this.ValidateResponse(response))
             {
                 return null;
             }
 
-            var country = response[1][0].MapToCountry();
+            return response[1][0].MapToCountry();
+        }
 
-            return country;
+        private bool ValidateResponse(WorldBankCountry[][] response)
+        {
+            return (response.Length == 2);
         }
 
         private void ValidateInput(string countryCode)
