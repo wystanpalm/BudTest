@@ -5,8 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Entity\WorldBankCountry.cs" />
-    <Compile Remove="Entity\WorldBankRegion.cs" />
     <Compile Remove="WorldBankData.cs" />
   </ItemGroup>
 
@@ -18,10 +16,6 @@
     <ProjectReference Include="..\BudTest.IData\BudTest.IData.csproj" />
     <ProjectReference Include="..\BudTest.IModel\BudTest.IModel.csproj" />
     <ProjectReference Include="..\BudTest.Model\BudTest.Model.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Entity\" />
   </ItemGroup>
 
 </Project>
