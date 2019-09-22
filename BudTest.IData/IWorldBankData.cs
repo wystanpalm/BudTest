@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace BudTest.IData
 {
     public interface IWorldBankData
     {
-        object FindCountry(string countryCode);
+        Task<string> FindCountry(string countryCode);
     }
 }

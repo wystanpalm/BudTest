@@ -13,8 +13,9 @@ namespace BudTest.DataTestXUnit
             var target = new WorldBankData();
 
             var result = target.FindCountry("GB");
+            result.Wait();
 
-            Assert.IsType<object>(result);
+            Assert.IsType<string>(result.Result);
         }
 
         [Fact]
@@ -23,8 +24,9 @@ namespace BudTest.DataTestXUnit
             var target = new WorldBankData();
 
             var result = target.FindCountry("XX");
+            result.Wait();
 
-            Assert.Null(result);
+            Assert.Null(result.Result);
         }
     }
 }
