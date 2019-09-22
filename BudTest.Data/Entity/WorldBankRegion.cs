@@ -6,6 +6,6 @@ namespace BudTest.Data.Entity
 {
     public class WorldBankRegion
     {
-        public string value { get; set; }
+        public string Value { get; set; }
     }
 }

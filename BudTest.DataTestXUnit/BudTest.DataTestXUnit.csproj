@@ -18,6 +18,8 @@
   <ItemGroup>
     <ProjectReference Include="..\BudTest.Data\BudTest.Data.csproj" />
     <ProjectReference Include="..\BudTest.IData\BudTest.IData.csproj" />
+    <ProjectReference Include="..\BudTest.IModel\BudTest.IModel.csproj" />
+    <ProjectReference Include="..\BudTest.Model\BudTest.Model.csproj" />
   </ItemGroup>
 
 </Project>

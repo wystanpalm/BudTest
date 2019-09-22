@@ -2,20 +2,21 @@ using System;
 using Xunit;
 using BudTest.IData;
 using BudTest.Data;
+using BudTest.Model;
 
 namespace BudTest.DataTestXUnit
 {
     public class WorldBankDataTest
     {
         [Fact]
-        public void FindCountry_ValidCountry_ReturnsObject()
+        public void FindCountry_ValidCountry_ReturnsCountry()
         {
             var target = new WorldBankData();
 
             var result = target.FindCountry("GB");
             result.Wait();
 
-            Assert.IsType<string>(result.Result);
+            Assert.IsType<Country>(result.Result);
         }
 
         [Fact]

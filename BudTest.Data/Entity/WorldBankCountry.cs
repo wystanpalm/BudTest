@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
+using BudTest.IModel;
+using BudTest.Model;
 
 namespace BudTest.Data.Entity
 {
@@ -22,5 +24,19 @@ namespace BudTest.Data.Entity
 
         [DataMember(Name = "latitude")]
         public decimal Latitude { get; set; }
-    }
+
+        public ICountry MapToCountry()
+        {
+            var country = new Country();
+
+            country.Name = this.Name;
+            country.Region = this.Region.Value;
+            country.CapitalCity = this.CapitalCity;
+            country.Longitude = this.Longitude;
+            country.Latitude = this.Latitude;
+
+            return country;
+        }
+   }
+
 }
