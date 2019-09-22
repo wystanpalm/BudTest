@@ -26,7 +26,7 @@ namespace BudTest.Data
 
             var country = something[1][0];
 
-            return country.name;
+            return country.Name;
         }
     }
 }

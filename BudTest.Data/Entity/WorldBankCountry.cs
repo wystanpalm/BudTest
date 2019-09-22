@@ -5,16 +5,22 @@ using System.Text;
 
 namespace BudTest.Data.Entity
 {
+    [DataContract]
     public class WorldBankCountry
     {
-        public string name { get; set; }
+        [DataMember(Name = "name")]
+        public string Name { get; set; }
 
-        public WorldBankRegion region { get; set; }
+        [DataMember(Name = "region")]
+        public WorldBankRegion Region { get; set; }
 
-        public string capitalCity { get; set; }
+        [DataMember(Name = "capitalCity")]
+        public string CapitalCity { get; set; }
 
-        public decimal longitude { get; set; }
+        [DataMember(Name = "longitude")]
+        public decimal Longitude { get; set; }
 
-        public decimal latitude { get; set; }
+        [DataMember(Name = "latitude")]
+        public decimal Latitude { get; set; }
     }
 }
