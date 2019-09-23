@@ -21,6 +21,7 @@ namespace BudTest.Data
 
     public async Task<ICountry> FindCountry(string countryCode)
         {
+            // ToDo: this is tightly coupled - put it in a factory
             ICountry country = new Country { CountryCode = countryCode };
             this.ValidateInput(country);
 

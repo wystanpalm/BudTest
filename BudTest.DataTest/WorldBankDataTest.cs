@@ -8,8 +8,8 @@ namespace BudTest.DataTestXUnit
 {
     public class WorldBankDataTest
     {
-        // ToDo: these tests consume the live WorldBank service - could mock the HttpClient to make them unit tests
-
+        // ToDo: these tests consume the live WorldBank service meaning they are slow and externally dependent
+        // could mock the HttpClient to make them unit tests
         [Fact]
         public void FindCountry_ValidCountry_ReturnsCountry()
         {
@@ -48,12 +48,17 @@ namespace BudTest.DataTestXUnit
             Assert.Equal(51.5002M, task.Result.Latitude);
         }
 
-        [Fact]
-        public void FindCountry_InvalidCharacters_ThrowsException()
+        [Theory]
+        [InlineData("/")]
+        [InlineData("GBxx")]
+        [InlineData("B*B")]
+        [InlineData("A")]
+        [InlineData("44")]
+        public void FindCountry_InvalidCharacters_ThrowsException(string value)
         {
             var target = new WorldBankData();
 
-            var task = target.FindCountry("/");
+            var task = target.FindCountry(value);
             Exception exception = Assert.Throws<AggregateException>(() => task.Wait());
             Assert.IsType<ArgumentException>(exception.InnerException);
         }
