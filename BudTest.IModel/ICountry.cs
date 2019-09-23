@@ -1,9 +1,9 @@
-﻿using System;
-
-namespace BudTest.IModel
+﻿namespace BudTest.IModel
 {
     public interface ICountry
     {
+        string CountryCode { get; set; }
+
         string Name { get; set; }
 
         string Region { get; set; }
@@ -13,5 +13,7 @@ namespace BudTest.IModel
         decimal Longitude { get; set; }
 
         decimal Latitude { get; set; }
+
+        bool IsValidCountryCode { get; }
     }
 }

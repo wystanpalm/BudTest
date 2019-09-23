@@ -8,6 +8,8 @@ namespace BudTest.DataTestXUnit
 {
     public class WorldBankDataTest
     {
+        // ToDo: these tests consume the live WorldBank service - could mock the HttpClient to make them unit tests
+
         [Fact]
         public void FindCountry_ValidCountry_ReturnsCountry()
         {

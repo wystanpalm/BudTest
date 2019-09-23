@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using BudTest.IData;
@@ -14,28 +11,40 @@ namespace BudTest.Data
 {
     public class WorldBankData : IWorldBankData
     {
-        private HttpClient client = new HttpClient();
+        private HttpClient client;
 
-        public async Task<ICountry> FindCountry(string countryCode)
+        public WorldBankData()
         {
-            this.ValidateInput(countryCode);
+            // Could inject this dependency in future, along with a CountryFactory
+            this.client = new HttpClient();
+        }
+
+    public async Task<ICountry> FindCountry(string countryCode)
+        {
+            ICountry country = new Country { CountryCode = countryCode };
+            this.ValidateInput(country);
 
             var responseString = await this.client.GetStringAsync(string.Format("http://api.worldbank.org/v2/country/{0}", countryCode));
 
-            XDocument xDocument = XDocument.Parse(responseString);
-
-            if (xDocument.Root.Name.LocalName != "countries")
+            XDocument xDocument = XDocument.Parse(responseString);            
+            if (!this.ValidateResponse(xDocument))
             {
                 return null;
             }
 
-            return this.BuildCountry(xDocument.Root.Elements().Single());
+            // Slightly optomistic here that there won't ever be two search results
+            // could two countries share two letters of a three-letter country code
+            // and if so, would the World Bank service return both? 
+            return this.BuildCountry(country, xDocument.Root.Elements().Single());
         }
 
-        private Country BuildCountry(XElement countryElement)
+        private bool ValidateResponse(XDocument xDocument)
         {
-            Country country = new Country();
+            return xDocument.Root.Name.LocalName == "countries";
+        }
 
+        private ICountry BuildCountry(ICountry country, XElement countryElement)
+        {
             country.Name = countryElement.Elements().Where(e => e.Name.LocalName == "name").Single().Value;
             country.Region = countryElement.Elements().Where(e => e.Name.LocalName == "region").Single().Value;
             country.CapitalCity = countryElement.Elements().Where(e => e.Name.LocalName == "capitalCity").Single().Value;
@@ -45,10 +54,9 @@ namespace BudTest.Data
             return country;
         }
 
-        private void ValidateInput(string countryCode)
+        private void ValidateInput(ICountry country)
         {
-            Regex regex = new Regex("^[a-zA-z]{2,3}$");
-            if (!regex.IsMatch(countryCode))
+            if (!country.IsValidCountryCode)
             {
                 throw new ArgumentException("Country code must be a two or three character country code.");
             }

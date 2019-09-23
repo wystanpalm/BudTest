@@ -2,7 +2,7 @@
 using BudTest.IData;
 using BudTest.Data;
 using BudTest.IModel;
-using System.Text.RegularExpressions;
+using BudTest.Model;
 
 namespace BudTest.ConsoleApp
 {
@@ -12,7 +12,7 @@ namespace BudTest.ConsoleApp
 
         Program()
         {
-            // Could inject this dependency in future
+            // Could inject this dependency in future, along with a CountryFactory
             this.worldBankData = new WorldBankData();
         }
 
@@ -65,10 +65,11 @@ namespace BudTest.ConsoleApp
             Console.WriteLine("Latitude: {0}", country.Latitude);
         }
 
-        private bool ValidateUserInput(string code)
+        private bool ValidateUserInput(string countryCode)
         {
-            Regex regex = new Regex("^[a-zA-z]{2,3}$");
-            return (regex.IsMatch(code));
+            // ToDo: this is tightly coupled - put it in a factory
+            ICountry country = new Country { CountryCode = countryCode };
+            return country.IsValidCountryCode;
         }
     }
 }
