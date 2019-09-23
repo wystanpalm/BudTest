@@ -32,15 +32,24 @@ namespace BudTest.Data
                 return null;
             }
 
-            // Slightly optomistic here that there won't ever be two search results
-            // could two countries share two letters of a three-letter country code
-            // and if so, would the World Bank service return both? 
             return this.BuildCountry(country, xDocument.Root.Elements().Single());
         }
 
         private bool ValidateResponse(XDocument xDocument)
         {
-            return xDocument.Root.Name.LocalName == "countries";
+            if (xDocument.Root.Name.LocalName != "countries")
+            {
+                // Assume we were returned an error response
+                return false;
+            }
+
+            if (xDocument.Root.Elements().Count() != 1)
+            {
+                // We're expecting only one result
+                return false;
+            }
+
+            return true;
         }
 
         private ICountry BuildCountry(ICountry country, XElement countryElement)
